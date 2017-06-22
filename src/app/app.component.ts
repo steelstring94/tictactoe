@@ -17,8 +17,18 @@ export class AppComponent {
 	victory: boolean = false;
 	victor: string = '';
 	
+	//This method executed whenever a
+	//cell on the board is clicked.
 	onClick(row, cell): void {
+		//If the victory flag is set, that
+		//means the game is over, and the
+		//else statement will return, preventing
+		//additional moves.
 		if(!this.victory) {
+			//If the flag is not set, we will
+			//check to see if the move that has
+			//just been made constitutes a victory
+			//and, if so, we will immediately return.
 			if(this.isVictory(row, cell)) {
 				return;
 			}
@@ -28,25 +38,38 @@ export class AppComponent {
 			return;
 		}
 		
+		//Return (i.e. do nothing with the click,
+		//and do not increment the current turn)
+		//if the cell clicked was not empty.
 		if((this.board[row][cell] !== 0)) {
 			return;
 		}
 		
+		//Change the number at the current cell
+		//to equal the player whose turn it is.
+		//This works because 1 represents an X,
+		//which is player 1, and 2 represents an
+		//O - player 2.
 		this.board[row][cell] = this.turn;
 		
-		if(this.turn === 1) {
-			this.turn = 2;
-		}
-		
-		else {
-			this.turn = 1;
-		}
+		//Set the current turn to the opposite
+		//of whatever it was to begin with.
+		//In other words, make it the other
+		//player's turn.
+		this.turn = this.turn === 1 ? 2 : 1;
 	}
 	
 	isVictory(row, cell): void {
 	
+		//Make a copy of the current board so that
+		//we can add in the move we are checking out
+		//and examine it without affecting the genuine
+		//copy.
 		let boardCopy = this.board.map(arr => arr.slice());
 		boardCopy[row][cell] = this.turn;
+		
+		//Set the victor based on whose turn it is.
+		//This will not be used if there is no victor.
 		this.victor = this.turn === 1 ? 'X' : 'O';
 	
 		//Flattening the board into one dimension, 
@@ -64,6 +87,8 @@ export class AppComponent {
 			});
 		});
 	
+		//Check the flattened version of
+		//the board for victory.
 		if(this.flatCheck(flat)) {
 			this.victory = true;
 		}
@@ -105,6 +130,10 @@ export class AppComponent {
 	//Takes an array of flattened board
 	//values and checks for a win.
 	flatCheck(flat): boolean {
+		let ret = false;
+		//Check if one dataset contains any
+		//zeroes.  If it does, then it cannot
+		//be a winner.
 		function containsZero(nums) {
 			let ret = false;
 			
@@ -116,21 +145,29 @@ export class AppComponent {
 			return ret;
 		}
 		
-		for(let i = 0; i < flat.length; i++) {
-			if((flat[i][0] === flat[i][1]) && (flat[i][1] === flat[i][2]) && !(containsZero(flat[i]))) {
-				return true;
+		flat.forEach((row) => {
+			//Checking if all three values in the row are equal
+			//and that no zeroes are present in a row.
+			if((row[0] === row[1]) && (row[1] === row[2]) && !(containsZero(row))) {
+				ret = true;
 			}
-		}
-		
-		return false;
+		});
+		return ret;
 	}
 	
+	//This method is triggered by the
+	//reset button and resets the board.
 	reset(): void {
+		//Iterate through all rows and
+		//cells and set them to 0.
 		this.board.forEach((row, i) => {
-			row.forEach((cell, k) => {
+			row.forEach((undefined, k) => {
 				this.board[i][k] = 0;
 			});
 		});
+		
+		//Reset victory, victor name
+		//and reset turn to player 1.
 		this.victory = false;
 		this.victor = '';
 		this.turn = 1;
