@@ -1,6 +1,6 @@
 .board {
 	width: 10em;
-	margin: 15em auto;
+	margin: 15em auto 0 auto;
 	box-sizing: border-box;
 }
 
@@ -23,4 +23,18 @@
 	padding: 1em;
 	text-align: center;
 	box-sizing: border-box;
+}
+
+.victoryDiv {
+	height: 20px;
+}
+
+.victoryMessage {
+	display: inline-block;
+	position: relative;
+	bottom: 5px;
+}
+
+.reset {
+	margin-top: 0;
 }

@@ -1,11 +1,16 @@
 <div class="container" style="text-align: center;">
 	<div class="board">
-		<div class="row" *ngFor="let row of board">
-			<div class="cell" *ngFor="let cell of row" [ngSwitch]="cell" (click)="onClick(cell)">
+		<div class="row" *ngFor="let row of board; index as i">
+			<div class="cell" *ngFor="let cell of row; index as k" [ngSwitch]="cell" (click)="onClick(i, k)">
 				<span *ngSwitchCase="0">&nbsp;</span>
 				<span *ngSwitchCase="1">X</span>
 				<span *ngSwitchCase="2">O</span>
 			</div>
 		</div>
 	</div>
+	<div class = "victoryDiv">
+		<p class="victoryMessage" *ngIf="victory">{{victor}} wins!</p>
+	</div>
+	<br>
+	<button class="reset" (click)="reset()">Reset</button>
 </div>
