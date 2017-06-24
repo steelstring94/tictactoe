@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { TicTacToeService } from './tictactoe.service';
+import { State } from './state';
 
 @Component({
   selector: 'app-root',
@@ -18,50 +20,24 @@ export class AppComponent {
 	victor: string = '';
 	draw: boolean = false;
 	
+	constructor(private tttservice: TicTacToeService, private currentState: State) {}
+	
 	//This method executed whenever a
 	//cell on the board is clicked.
 	onClick(row, cell): void {
+		this.currentState.board = this.board;
+		this.currentState.turn = this.turn;
+		this.currentState.victory = this.victory;
+		this.currentState.victor = this.victor;
+		this.currentState.draw = this.draw;
 		
-		//Return (i.e. do nothing with the click,
-		//and do not increment the current turn)
-		//if the cell clicked was not empty.
-		if((this.board[row][cell] !== 0)) {
-			return;
-		}
+		let newState = this.tttservice.handleClick(this.currentState, row, cell);
 		
-		//Check for a draw
-		if(this.isDraw(row, cell)) {
-			this.board[row][cell] = this.turn;
-			this.draw = true;
-			return;
-		}
-		
-		//If the victory flag is set, that
-		//means the game is over, and the
-		//else statement will return, preventing
-		//additional moves.
-		if(!this.victory) {
-			//Check if the move that was just made
-			//constitutes a victory.
-			this.isVictory(row, cell);
-		}
-		
-		else {
-			return;
-		}
-		
-		//Change the number at the current cell
-		//to equal the player whose turn it is.
-		//This works because 1 represents an X,
-		//which is player 1, and 2 represents an
-		//O - player 2.
-		this.board[row][cell] = this.turn;
-		
-		//Set the current turn to the opposite
-		//of whatever it was to begin with.
-		//In other words, make it the other
-		//player's turn.
-		this.turn = this.turn === 1 ? 2 : 1;
+		this.board = newState.board;
+		this.turn = newState.turn;
+		this.victory = newState.victory;
+		this.victor = newState.victor;
+		this.draw = newState.draw;
 	}
 	
 	isDraw(row, cell): boolean {
