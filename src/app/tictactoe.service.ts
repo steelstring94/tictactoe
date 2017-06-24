@@ -7,11 +7,7 @@ export class TicTacToeService {
 	constructor(private newState: State) {}
 	
 	handleClick(state, row, cell): State {
-		this.newState.board = state.board.map(arr => arr.slice());
-		this.newState.turn = state.turn;
-		this.newState.victory = state.victory;
-		this.newState.victor = state.victor;
-		this.newState.draw = state.draw;
+		this.newState = JSON.parse(JSON.stringify(state));
 		
 		//Return (i.e. do nothing with the click,
 		//and do not increment the current turn)
