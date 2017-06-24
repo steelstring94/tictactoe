@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { TicTacToeService } from './tictactoe.service';
-import { State } from './state';
 
 @Component({
   selector: 'app-root',
@@ -20,18 +19,19 @@ export class AppComponent {
 	victor: string = '';
 	draw: boolean = false;
 	
-	constructor(private tttservice: TicTacToeService, private currentState: State) {}
+	constructor(private tttservice: TicTacToeService) {}
 	
 	//This method executed whenever a
 	//cell on the board is clicked.
 	onClick(row, cell): void {
-		this.currentState.board = this.board;
-		this.currentState.turn = this.turn;
-		this.currentState.victory = this.victory;
-		this.currentState.victor = this.victor;
-		this.currentState.draw = this.draw;
 		
-		let newState = this.tttservice.handleClick(this.currentState, row, cell);
+		let newState = this.tttservice.handleClick({
+			board: this.board,
+			turn: this.turn,
+			victory: this.victory,
+			victor: this.victor,
+			draw: this.draw
+		}, row, cell);
 		
 		this.board = newState.board;
 		this.turn = newState.turn;
