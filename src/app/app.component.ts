@@ -8,18 +8,19 @@ import { TicTacToeService } from './tictactoe.service';
 })
 export class AppComponent {
   title = 'Tic-Tac-Toe';
-  board: number[][] = [
-		[0,0,0],
-		[0,0,0],
-		[0,0,0],
-	];
-	
+  board: number[][];
 	turn: number = 1;
 	victory: boolean = false;
 	victor: string = '';
 	draw: boolean = false;
 	
-	constructor(private tttservice: TicTacToeService) {}
+	constructor(private tttservice: TicTacToeService) {
+		this.board = [
+			[0,0,0],
+			[0,0,0],
+			[0,0,0]
+		];
+	}
 	
 	//This method executed whenever a
 	//cell on the board is clicked.
