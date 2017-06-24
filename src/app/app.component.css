@@ -2,6 +2,7 @@
 	width: 10em;
 	margin: 15em auto 0 auto;
 	box-sizing: border-box;
+	text-align: center;
 }
 
 .row {
@@ -27,6 +28,7 @@
 
 .victoryDiv {
 	height: 20px;
+	margin-right: 15px;
 }
 
 .victoryMessage {
@@ -36,5 +38,5 @@
 }
 
 .reset {
-	margin-top: 0;
+	margin-right: 15px;
 }

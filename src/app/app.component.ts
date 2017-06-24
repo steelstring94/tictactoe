@@ -16,32 +16,37 @@ export class AppComponent {
 	turn: number = 1;
 	victory: boolean = false;
 	victor: string = '';
+	draw: boolean = false;
 	
 	//This method executed whenever a
 	//cell on the board is clicked.
 	onClick(row, cell): void {
-		//If the victory flag is set, that
-		//means the game is over, and the
-		//else statement will return, preventing
-		//additional moves.
-		if(!this.victory) {
-			//If the flag is not set, we will
-			//check to see if the move that has
-			//just been made constitutes a victory
-			//and, if so, we will immediately return.
-			if(this.isVictory(row, cell)) {
-				return;
-			}
-		}
-		
-		else {
-			return;
-		}
 		
 		//Return (i.e. do nothing with the click,
 		//and do not increment the current turn)
 		//if the cell clicked was not empty.
 		if((this.board[row][cell] !== 0)) {
+			return;
+		}
+		
+		//Check for a draw
+		if(this.isDraw(row, cell)) {
+			this.board[row][cell] = this.turn;
+			this.draw = true;
+			return;
+		}
+		
+		//If the victory flag is set, that
+		//means the game is over, and the
+		//else statement will return, preventing
+		//additional moves.
+		if(!this.victory) {
+			//Check if the move that was just made
+			//constitutes a victory.
+			this.isVictory(row, cell);
+		}
+		
+		else {
 			return;
 		}
 		
@@ -57,6 +62,28 @@ export class AppComponent {
 		//In other words, make it the other
 		//player's turn.
 		this.turn = this.turn === 1 ? 2 : 1;
+	}
+	
+	isDraw(row, cell): boolean {
+		//Start from the assumption that it is
+		//a draw, set to false if we find at least
+		//one cell equal to zero.
+		let draw = true;
+		//Create copy of board so we can check
+		//the latest move without modifying
+		//the actual board.
+		let boardCopy = this.board.map(arr => arr.slice());
+		boardCopy[row][cell] = this.turn;
+		boardCopy.forEach((row) => {
+			row.forEach((cell) => {
+				//If any cell is equal to zero, then
+				//there is no draw.
+				if(cell === 0) {
+					draw = false;
+				}
+			});
+		});
+		return draw;
 	}
 	
 	isVictory(row, cell): void {
@@ -161,14 +188,15 @@ export class AppComponent {
 		//Iterate through all rows and
 		//cells and set them to 0.
 		this.board.forEach((row, i) => {
-			row.forEach((undefined, k) => {
+			row.forEach((cell, k) => {
 				this.board[i][k] = 0;
 			});
 		});
 		
-		//Reset victory, victor name
+		//Reset victory, victor name and draw
 		//and reset turn to player 1.
 		this.victory = false;
+		this.draw = false;
 		this.victor = '';
 		this.turn = 1;
 	}

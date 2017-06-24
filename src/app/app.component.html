@@ -10,6 +10,7 @@
 	</div>
 	<div class = "victoryDiv">
 		<p class="victoryMessage" *ngIf="victory">{{victor}} wins!</p>
+		<p class="victoryMessage" *ngIf="draw">It's a draw!</p>
 	</div>
 	<br>
 	<button class="reset" (click)="reset()">Reset</button>
